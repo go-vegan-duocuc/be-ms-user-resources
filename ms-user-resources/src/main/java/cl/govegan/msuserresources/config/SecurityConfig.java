@@ -37,6 +37,7 @@ public class SecurityConfig {
         return new CorsFilter(source);
     }
 
+
     @Bean
     public PasswordEncoder passwordEncoder () {
         return new BCryptPasswordEncoder();
