@@ -4,6 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cl.govegan.msuserresources.services.JwtService;
+import io.jsonwebtoken.Jwts;
+
+import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -40,6 +46,7 @@ public class UserResourcesController {
 
         private final UserRepository userRepository;
         private final PasswordEncoder passwordEncoder;
+        private final JwtService jwtService;
 
         @GetMapping("/role")
         public Map<String, String> getRole(@RequestParam String username) {
@@ -51,7 +58,10 @@ public class UserResourcesController {
         }
 
         @GetMapping("/profile")
-        public ResponseEntity<User> getUserProfile (@RequestParam String username) {
+        public ResponseEntity<User> getUserProfile (HttpServletRequest request) {
+                String token = request.getHeader("Authorization").replace("Bearer ", "");
+
+                String username = jwtService.getUsernameFromToken(token);
 
                 User user = userRepository.findByUsername(username)
                                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
@@ -60,8 +70,11 @@ public class UserResourcesController {
         }
 
         @PatchMapping("/profile")
-        public ResponseEntity<User> updateUserProfile(@RequestParam String username,
-                        @RequestBody Profile updatedProfile) {
+        public ResponseEntity<User> updateUserProfile(HttpServletRequest request, @RequestBody Profile updatedProfile) {
+
+                String token = request.getHeader("Authorization").replace("Bearer ", "");
+
+                String username = jwtService.getUsernameFromToken(token);
 
                 User userToUpdate = userRepository.findByUsername(username)
                                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
@@ -148,8 +161,12 @@ public class UserResourcesController {
         }
 
         @PostMapping("/addFavoriteRecipeById")
-        public ResponseEntity<ResponseHttpService> addFavoriteRecipeById(@RequestParam String username,
+        public ResponseEntity<ResponseHttpService> addFavoriteRecipeById(HttpServletRequest request,
                         @RequestParam String recipeId) {
+
+                String token = request.getHeader("Authorization").replace("Bearer ", "");
+
+                String username = jwtService.getUsernameFromToken(token);
 
                 User userToUpdate = userRepository.findByUsername(username)
                                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
@@ -177,10 +194,13 @@ public class UserResourcesController {
         }
 
         @GetMapping("/getFavoriteRecipes")
-        public ResponseEntity<ResponseHttpService> getFavoriteRecipes(
-                @RequestParam String username,
+        public ResponseEntity<ResponseHttpService> getFavoriteRecipes(HttpServletRequest request,
                         @RequestParam(value = "page", defaultValue = "0") int page,
                         @RequestParam(value = "size", defaultValue = "10") int size) {
+
+                String token = request.getHeader("Authorization").replace("Bearer ", "");
+
+                String username = jwtService.getUsernameFromToken(token);
 
                 User user = userRepository.findByUsername(username)
                                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
@@ -201,8 +221,12 @@ public class UserResourcesController {
         }
 
         @DeleteMapping("/deleteFavoriteRecipeById")
-        public ResponseEntity<ResponseHttpService> deleteFavoriteRecipeById(@RequestParam String username,
+        public ResponseEntity<ResponseHttpService> deleteFavoriteRecipeById(HttpServletRequest request,
                         @RequestParam String recipeId) {
+
+                String token = request.getHeader("Authorization").replace("Bearer ", "");
+
+                String username = jwtService.getUsernameFromToken(token);
 
                 User userToUpdate = userRepository.findByUsername(username)
                                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
@@ -230,8 +254,12 @@ public class UserResourcesController {
         }
 
         @GetMapping("/isFavoriteRecipe")
-        public ResponseEntity<ResponseHttpService> isFavoriteRecipe(@RequestParam String username,
+        public ResponseEntity<ResponseHttpService> isFavoriteRecipe(HttpServletRequest request,
                         @RequestParam String recipeId) {
+
+                String token = request.getHeader("Authorization").replace("Bearer ", "");
+
+                String username = jwtService.getUsernameFromToken(token);
 
                 User user = userRepository.findByUsername(username)
                                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
@@ -246,8 +274,11 @@ public class UserResourcesController {
         }
 
         @PostMapping("/addFavoriteFoodById")
-        public ResponseEntity<ResponseHttpService> addFavoriteFoodById(@RequestParam String username,
+        public ResponseEntity<ResponseHttpService> addFavoriteFoodById(HttpServletRequest request,
                         @RequestParam String foodId) {
+
+                String token = request.getHeader("Authorization").replace("Bearer ", "");
+                String username = jwtService.getUsernameFromToken(token);
 
                 User userToUpdate = userRepository.findByUsername(username)
                                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
@@ -290,9 +321,12 @@ public class UserResourcesController {
 
         @GetMapping("/getFavoriteFoods")
         public ResponseEntity<ResponseHttpService> getFavoriteFoods(
-                @RequestParam String username,
+                HttpServletRequest request,
                         @RequestParam(value = "page", defaultValue = "0") int page,
                         @RequestParam(value = "size", defaultValue = "10") int size) {
+
+                String token = request.getHeader("Authorization").replace("Bearer ", "");
+                String username = jwtService.getUsernameFromToken(token);
 
                 User user = userRepository.findByUsername(username)
                                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
@@ -314,8 +348,11 @@ public class UserResourcesController {
         }
 
         @DeleteMapping("/deleteFavoriteFoodById")
-        public ResponseEntity<ResponseHttpService> deleteFavoriteFoodById(@RequestParam String username,
+        public ResponseEntity<ResponseHttpService> deleteFavoriteFoodById(HttpServletRequest request,
                         @RequestParam String foodId) {
+
+                String token = request.getHeader("Authorization").replace("Bearer ", "");
+                String username = jwtService.getUsernameFromToken(token);
 
                 User userToUpdate = userRepository.findByUsername(username)
                                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
@@ -343,8 +380,11 @@ public class UserResourcesController {
         }
 
         @GetMapping("/isFavoriteFood")
-        public ResponseEntity<ResponseHttpService> isFavoriteFood(@RequestParam String username,
+        public ResponseEntity<ResponseHttpService> isFavoriteFood(HttpServletRequest request,
                         @RequestParam String foodId) {
+
+                String token = request.getHeader("Authorization").replace("Bearer ", "");
+                String username = jwtService.getUsernameFromToken(token);
 
                 User user = userRepository.findByUsername(username)
                                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
@@ -359,8 +399,10 @@ public class UserResourcesController {
         }
 
         @PostMapping("/addFoodAlergies")
-        public ResponseEntity<ResponseHttpService> addFoodAlergies(@RequestParam String username,
+        public ResponseEntity<ResponseHttpService> addFoodAlergies(HttpServletRequest request,
                         @RequestParam String foodId) {
+                String token = request.getHeader("Authorization").replace("Bearer ", "");
+                String username = jwtService.getUsernameFromToken(token);
 
                 User userToUpdate = userRepository.findByUsername(username)
                                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
@@ -403,9 +445,12 @@ public class UserResourcesController {
 
         @GetMapping("/getAllAlergies")
         public ResponseEntity<ResponseHttpService> getAllAlergies(
-                @RequestParam String username,
+                HttpServletRequest request,
                         @RequestParam(value = "page", defaultValue = "0") int page,
                         @RequestParam(value = "size", defaultValue = "10") int size) {
+
+                String token = request.getHeader("Authorization").replace("Bearer ", "");
+                String username = jwtService.getUsernameFromToken(token);
 
                 User user = userRepository.findByUsername(username)
                                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
@@ -426,8 +471,11 @@ public class UserResourcesController {
         }
 
         @DeleteMapping("/deleteFoodAlergies")
-        public ResponseEntity<ResponseHttpService> deleteFoodAlergies(@RequestParam String username,
+        public ResponseEntity<ResponseHttpService> deleteFoodAlergies(HttpServletRequest request,
                         @RequestParam String foodId) {
+
+                String token = request.getHeader("Authorization").replace("Bearer ", "");
+                String username = jwtService.getUsernameFromToken(token);
 
                 User userToUpdate = userRepository.findByUsername(username)
                                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
@@ -455,8 +503,11 @@ public class UserResourcesController {
         }
 
         @PostMapping("/addUnwantedFoods")
-        public ResponseEntity<ResponseHttpService> addUnwantedFood(@RequestParam String username,
+        public ResponseEntity<ResponseHttpService> addUnwantedFood(HttpServletRequest request,
                         @RequestParam String foodId) {
+
+                String token = request.getHeader("Authorization").replace("Bearer ", "");
+                String username = jwtService.getUsernameFromToken(token);
 
                 User userToUpdate = userRepository.findByUsername(username)
                                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
@@ -498,7 +549,10 @@ public class UserResourcesController {
         }
 
         @GetMapping("/getAllUnwantedFoods")
-        public ResponseEntity<ResponseHttpService> getAllUnwantedFood(@RequestParam String username) {
+        public ResponseEntity<ResponseHttpService> getAllUnwantedFood(HttpServletRequest request) {
+
+                String token = request.getHeader("Authorization").replace("Bearer ", "");
+                String username = jwtService.getUsernameFromToken(token);
 
                 User user = userRepository.findByUsername(username)
                                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
@@ -511,8 +565,11 @@ public class UserResourcesController {
         }
 
         @DeleteMapping("/deleteUnwantedFoods")
-        public ResponseEntity<ResponseHttpService> deleteUnwantedFoods(@RequestParam String username,
+        public ResponseEntity<ResponseHttpService> deleteUnwantedFoods(HttpServletRequest request,
                         @RequestParam String foodId) {
+
+                String token = request.getHeader("Authorization").replace("Bearer ", "");
+                String username = jwtService.getUsernameFromToken(token);
 
                 User userToUpdate = userRepository.findByUsername(username)
                                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
