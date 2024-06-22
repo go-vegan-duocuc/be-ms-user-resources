@@ -11,8 +11,6 @@ COPY src ./src
 # Build the application
 RUN mvn clean package
 
-RUN mvn verify sonar:sonar "-Dsonar.projectKey=ms-search-food-branch" "-Dsonar.projectName='ms-search-food-branch'" "-Dsonar.host.url=http://localhost:9000" "-Dsonar.token=sqa_5343de562a0b0b16289a0c81b75d70a2202a2ae5"
-
 # Run stage
 FROM eclipse-temurin:17 AS runstage
 
