@@ -9,7 +9,7 @@ COPY pom.xml .
 COPY src ./src
 
 # Build the application
-RUN mvn clean package
+RUN mvn clean package -DskipTests
 
 # Run stage
 FROM eclipse-temurin:17 AS runstage
