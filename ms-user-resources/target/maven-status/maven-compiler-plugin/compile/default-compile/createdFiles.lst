@@ -1,0 +1,15 @@
+cl\govegan\msuserresources\services\ResponseHttpService$ResponseHttpServiceBuilder.class
+cl\govegan\msuserresources\services\ResponseHttpService.class
+cl\govegan\msuserresources\models\Role.class
+cl\govegan\msuserresources\MsUserResourcesApplication.class
+cl\govegan\msuserresources\models\Gender.class
+cl\govegan\msuserresources\models\Profile$ProfileBuilder.class
+cl\govegan\msuserresources\models\User$UserBuilder.class
+cl\govegan\msuserresources\config\SecurityConfig.class
+cl\govegan\msuserresources\exception\TokenRefreshException.class
+cl\govegan\msuserresources\models\Profile.class
+cl\govegan\msuserresources\controller\UserResourcesController.class
+cl\govegan\msuserresources\exception\GlobalExceptionHandler.class
+cl\govegan\msuserresources\exception\DuplicateUsernameException.class
+cl\govegan\msuserresources\models\User.class
+cl\govegan\msuserresources\repositories\UserRepository.class

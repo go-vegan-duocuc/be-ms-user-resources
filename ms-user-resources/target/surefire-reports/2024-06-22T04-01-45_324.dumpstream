@@ -1,0 +1,5 @@
+# Created at 2024-06-22T04:01:45.652
+Boot Manifest-JAR contains absolute paths in classpath 'D:\proyectos-ti\go-vegan-team\backend\microservices\be-ms-user-resources\ms-user-resources\target\test-classes'
+Hint: <argLine>-Djdk.net.URLClassPath.disableClassPathURLCheck=true</argLine>
+'other' has different root
+

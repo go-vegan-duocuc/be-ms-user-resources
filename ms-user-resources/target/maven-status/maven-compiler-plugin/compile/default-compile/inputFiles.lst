@@ -1,0 +1,12 @@
+D:\proyectos-ti\go-vegan-team\backend\microservices\be-ms-user-resources\ms-user-resources\src\main\java\cl\govegan\msuserresources\exception\TokenRefreshException.java
+D:\proyectos-ti\go-vegan-team\backend\microservices\be-ms-user-resources\ms-user-resources\src\main\java\cl\govegan\msuserresources\models\Role.java
+D:\proyectos-ti\go-vegan-team\backend\microservices\be-ms-user-resources\ms-user-resources\src\main\java\cl\govegan\msuserresources\models\User.java
+D:\proyectos-ti\go-vegan-team\backend\microservices\be-ms-user-resources\ms-user-resources\src\main\java\cl\govegan\msuserresources\MsUserResourcesApplication.java
+D:\proyectos-ti\go-vegan-team\backend\microservices\be-ms-user-resources\ms-user-resources\src\main\java\cl\govegan\msuserresources\models\Profile.java
+D:\proyectos-ti\go-vegan-team\backend\microservices\be-ms-user-resources\ms-user-resources\src\main\java\cl\govegan\msuserresources\services\ResponseHttpService.java
+D:\proyectos-ti\go-vegan-team\backend\microservices\be-ms-user-resources\ms-user-resources\src\main\java\cl\govegan\msuserresources\config\SecurityConfig.java
+D:\proyectos-ti\go-vegan-team\backend\microservices\be-ms-user-resources\ms-user-resources\src\main\java\cl\govegan\msuserresources\repositories\UserRepository.java
+D:\proyectos-ti\go-vegan-team\backend\microservices\be-ms-user-resources\ms-user-resources\src\main\java\cl\govegan\msuserresources\exception\GlobalExceptionHandler.java
+D:\proyectos-ti\go-vegan-team\backend\microservices\be-ms-user-resources\ms-user-resources\src\main\java\cl\govegan\msuserresources\models\Gender.java
+D:\proyectos-ti\go-vegan-team\backend\microservices\be-ms-user-resources\ms-user-resources\src\main\java\cl\govegan\msuserresources\controller\UserResourcesController.java
+D:\proyectos-ti\go-vegan-team\backend\microservices\be-ms-user-resources\ms-user-resources\src\main\java\cl\govegan\msuserresources\exception\DuplicateUsernameException.java
