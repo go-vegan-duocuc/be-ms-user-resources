@@ -35,10 +35,19 @@ public class UserProfile {
    private double height;
    private String city;
    private String country;
+   
+   @Field(targetType = FieldType.OBJECT_ID)
    private ArrayList<String> allergies;
+
+   @Field(targetType = FieldType.OBJECT_ID)
    private ArrayList<String> favoriteFoods;
+
+   @Field(targetType = FieldType.OBJECT_ID)
    private ArrayList<String> unwantedFoods;
+
+   @Field(targetType = FieldType.OBJECT_ID)
    private ArrayList<String> favoriteRecipes;
+   
    private int caloriesPerDay;
    private double waterPerDay;
    private String title;

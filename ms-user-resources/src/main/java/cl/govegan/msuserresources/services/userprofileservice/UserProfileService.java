@@ -1,5 +1,7 @@
 package cl.govegan.msuserresources.services.userprofileservice;
 
+import java.util.List;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -11,40 +13,40 @@ public interface  UserProfileService {
 
    public UserProfile getUserProfile(Authentication authentication);
 
-   public UserProfile createUserProfile(UserProfileRequest request, Authentication authentication);
+   public UserProfile createUserProfile(Authentication authentication, UserProfileRequest userProfileRequest);
 
-   public UserProfile updateUserProfile(UserProfile userProfile);
+   public UserProfile updateUserProfile(Authentication authentication, UserProfileRequest userProfileRequest);
 
-   public UserProfile addFavoriteRecipeById(String recipeId);
+   public UserProfile addFavoriteRecipeById(Authentication authentication, String recipeId);
 
-   public UserProfile getFavoriteRecipes();
+   public List<String> getFavoriteRecipes(Authentication authentication);
 
-   public UserProfile deleteFavoriteRecipeById(String recipeId);
+   public void deleteFavoriteRecipeById(Authentication authentication,String recipeId);
 
-   public Boolean isFavoriteRecipe(String recipeId);
+   public Boolean isFavoriteRecipe(Authentication authentication, String recipeId);
 
-   public UserProfile addFavoriteFoodById (String foodId);
+   public UserProfile addFavoriteFoodById (Authentication authentication, String foodId);
 
-   public UserProfile getFavoriteFoods();
+   public List<String> getFavoriteFoods(Authentication authentication);
 
-   public UserProfile deleteFavoriteFoodById(String foodId);
+   public void deleteFavoriteFoodById(Authentication authentication, String foodId);
 
-   public Boolean isFavoriteFood(String foodId);
+   public Boolean isFavoriteFood(Authentication authentication, String foodId);
 
-   public UserProfile addFoodAlergiesById(String foodId);
+   public UserProfile addFoodAlergiesById(Authentication authentication, String foodId);
 
-   public UserProfile getFoodAlergies();
+   public List<String> getFoodAlergies(Authentication authentication);
 
-   public UserProfile deleteFoodAlergiesById(String foodId);
+   public void deleteFoodAlergiesById(Authentication authentication, String foodId);
 
-   public Boolean isFoodAlergies(String foodId);
+   public Boolean isFoodAlergies(Authentication authentication, String foodId);
 
-   public UserProfile addUnwantedFoodById(String foodId);
+   public UserProfile addUnwantedFoodById(Authentication authentication, String foodId);
 
-   public UserProfile getUnwantedFoods();
+   public List<String> getUnwantedFoods(Authentication authentication);
 
-   public UserProfile deleteUnwantedFoodById(String foodId);
+   public void deleteUnwantedFoodById(Authentication authentication, String foodId);
 
-   public Boolean isUnwantedFood(String foodId);
+   public Boolean isUnwantedFood(Authentication authentication, String foodId);
 
 }
