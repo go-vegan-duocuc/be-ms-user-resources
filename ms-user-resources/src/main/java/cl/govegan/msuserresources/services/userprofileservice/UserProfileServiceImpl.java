@@ -35,8 +35,6 @@ public class UserProfileServiceImpl implements UserProfileService {
       } else {
          userProfileRepository.save(UserProfile.builder()
                .userId(userData.get(USER_ID))
-               .username(userData.get(USER_ID))
-               .email("")
                .name("")
                .profilePicture("")
                .age(0)
@@ -71,8 +69,6 @@ public class UserProfileServiceImpl implements UserProfileService {
       } else {
          return userProfileRepository.save(UserProfile.builder()
                .userId(userData.get(USER_ID))
-               .username(userData.get(USER_ID))
-               .email("")
                .name("")
                .profilePicture("")
                .age(0)
@@ -100,7 +96,6 @@ public class UserProfileServiceImpl implements UserProfileService {
 
       if (userProfile.isPresent()) {
          UserProfile profile = userProfile.get();
-         profile.setEmail(userProfileRequest.getEmail());
          profile.setName(userProfileRequest.getName());
          profile.setProfilePicture(userProfileRequest.getProfilePicture());
          profile.setAge(userProfileRequest.getAge());
@@ -383,6 +378,20 @@ public class UserProfileServiceImpl implements UserProfileService {
 
       if (userProfile.isPresent()) {
          return userProfile.get().getUnwantedFoods().contains(foodId);
+      } else {
+         throw new RuntimeException("User profile not found");
+      }
+   }
+
+   @Override
+   public void deleteUserProfile(Authentication authentication) {
+
+      Map<String, String> userData = jwtService.getClaimsFromAuthentication(authentication);
+
+      Optional<UserProfile> userProfile = userProfileRepository.findByUserId(userData.get(USER_ID));
+
+      if (userProfile.isPresent()) {
+         userProfileRepository.delete(userProfile.get());
       } else {
          throw new RuntimeException("User profile not found");
       }

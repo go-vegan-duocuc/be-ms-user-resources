@@ -25,8 +25,6 @@ public class UserProfile {
    @Field(targetType = FieldType.OBJECT_ID)
    private String userId;
    
-   private String username;
-   private String email;
    private String name;
    private String profilePicture;
    private int age;

@@ -477,4 +477,25 @@ public class UserProfileController {
                             .build());
         }
     }
+
+    @DeleteMapping("/delete-user-profile")
+        public ResponseEntity<ApiResponse<String>> deleteUserProfile(Authentication authentication) {
+        
+                try {
+                userProfileService.deleteUserProfile(authentication);
+                return ResponseEntity.ok(
+                        ApiResponse.<String>builder()
+                                .status(HttpStatus.OK.value())
+                                .message("User profile deleted")
+                                .data("User profile deleted")
+                                .build());
+                } catch (Exception e) {
+                return ResponseEntity.badRequest().body(
+                        ApiResponse.<String>builder()
+                                .status(HttpStatus.BAD_REQUEST.value())
+                                .message(e.getMessage())
+                                .data(null)
+                                .build());
+                }
+        }
 }

@@ -49,4 +49,6 @@ public interface  UserProfileService {
 
    public Boolean isUnwantedFood(Authentication authentication, String foodId);
 
+   public void deleteUserProfile(Authentication authentication);
+
 }

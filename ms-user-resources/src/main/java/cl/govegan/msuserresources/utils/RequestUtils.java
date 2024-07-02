@@ -11,8 +11,6 @@ public class RequestUtils {
    public static UserProfile toUserProfile (UserProfileRequest request, Map<String, String> userData) {
       return UserProfile.builder()
             .userId(userData.get("userId"))
-            .username(userData.get("username"))
-            .email(request.getEmail())
             .name(request.getName())
             .profilePicture(request.getProfilePicture())
             .age(request.getAge())
@@ -30,5 +28,9 @@ public class RequestUtils {
             .title(request.getTitle())
             .build();
 
+   }
+
+   private RequestUtils() {
+      throw new IllegalStateException("Utility class");
    }
 }
