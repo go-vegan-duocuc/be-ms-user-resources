@@ -10,6 +10,7 @@ services:
       - MONGO_PASSWORD=${MONGO_PASSWORD}
       - MONGO_HOST=${MONGO_HOST}
       - MONGO_DATABASE=${MONGO_DATABASE}
+      - JWT_SECRET=${JWT_SECRET}
     env_file:
       - ./.env
     ports:
