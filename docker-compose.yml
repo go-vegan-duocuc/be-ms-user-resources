@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   ms-user-resources:
     build:
@@ -5,12 +7,14 @@ services:
       dockerfile: Dockerfile
     volumes:
       - /tmp
+      - ./ms-user-resources/src/main/resources/serviceAccountKey.json:/app/src/main/resources/serviceAccountKey.json:ro
     environment:
       - MONGO_USER=${MONGO_USER}
       - MONGO_PASSWORD=${MONGO_PASSWORD}
       - MONGO_HOST=${MONGO_HOST}
       - MONGO_DATABASE=${MONGO_DATABASE}
       - JWT_SECRET=${JWT_SECRET}
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/src/main/resources/serviceAccountKey.json
     env_file:
       - ./.env
     ports:

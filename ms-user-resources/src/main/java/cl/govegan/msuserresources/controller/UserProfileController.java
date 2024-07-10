@@ -32,6 +32,28 @@ public class UserProfileController {
 
     private final UserProfileService userProfileService;
 
+    @PostMapping("/default-profile")
+    public ResponseEntity<ApiResponse<UserProfile>> createDefaultUserProfile(@RequestBody String userId,
+            Authentication authentication) {
+        try {
+            UserProfile userProfile = userProfileService.generateDefaultUserProfile(userId);
+            return ResponseEntity.ok(
+                    ApiResponse.<UserProfile>builder()
+                            .status(HttpStatus.CREATED.value())
+                            .message("User profile created")
+                            .data(userProfile)
+                            .build());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                    ApiResponse.<UserProfile>builder()
+                            .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                            .message("Error creating default user profile: "
+                                    + e.getMessage())
+                            .data(null)
+                            .build());
+        }
+    }
+
     @GetMapping()
     public ResponseEntity<ApiResponse<UserProfile>> getUserProfile(Authentication authentication) {
 
@@ -42,28 +64,6 @@ public class UserProfileController {
                             .status(HttpStatus.OK.value())
                             .message("User profile retrieved")
                             .data(userProfile)
-                            .build());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(
-                    ApiResponse.<UserProfile>builder()
-                            .status(HttpStatus.BAD_REQUEST.value())
-                            .message(e.getMessage())
-                            .data(null)
-                            .build());
-        }
-    }
-
-    @PostMapping()
-    public ResponseEntity<ApiResponse<UserProfile>> createUserProfile(Authentication authentication,
-            @RequestBody UserProfileRequest userProfile) {
-
-        try {
-            UserProfile createdProfile = userProfileService.createUserProfile(authentication, userProfile);
-            return ResponseEntity.ok(
-                    ApiResponse.<UserProfile>builder()
-                            .status(HttpStatus.CREATED.value())
-                            .message("User profile created")
-                            .data(createdProfile)
                             .build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
@@ -328,7 +328,8 @@ public class UserProfileController {
             int end = Math.min((page + 1) * size, allergies.size());
 
             Pageable pageable = PageRequest.of(page, size);
-            Page<String> allergiesPage = new PageImpl<>(allergies.subList(start, end), pageable, allergies.size());
+            Page<String> allergiesPage = new PageImpl<>(allergies.subList(start, end), pageable,
+                    allergies.size());
 
             return ResponseEntity.ok(
                     ApiResponse.<Page<String>>builder()
@@ -479,24 +480,24 @@ public class UserProfileController {
     }
 
     @DeleteMapping("/delete-user-profile")
-        public ResponseEntity<ApiResponse<String>> deleteUserProfile(Authentication authentication) {
-        
-                try {
-                userProfileService.deleteUserProfile(authentication);
-                return ResponseEntity.ok(
-                        ApiResponse.<String>builder()
-                                .status(HttpStatus.OK.value())
-                                .message("User profile deleted")
-                                .data("User profile deleted")
-                                .build());
-                } catch (Exception e) {
-                return ResponseEntity.badRequest().body(
-                        ApiResponse.<String>builder()
-                                .status(HttpStatus.BAD_REQUEST.value())
-                                .message(e.getMessage())
-                                .data(null)
-                                .build());
-                }
+    public ResponseEntity<ApiResponse<String>> deleteUserProfile(Authentication authentication) {
+
+        try {
+            userProfileService.deleteUserProfile(authentication);
+            return ResponseEntity.ok(
+                    ApiResponse.<String>builder()
+                            .status(HttpStatus.OK.value())
+                            .message("User profile deleted")
+                            .data("User profile deleted")
+                            .build());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(
+                    ApiResponse.<String>builder()
+                            .status(HttpStatus.BAD_REQUEST.value())
+                            .message(e.getMessage())
+                            .data(null)
+                            .build());
         }
+    }
 
 }

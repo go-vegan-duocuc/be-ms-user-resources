@@ -11,6 +11,8 @@ import cl.govegan.msuserresources.web.request.UserProfileRequest;
 @Service
 public interface  UserProfileService {
 
+   public UserProfile generateDefaultUserProfile(String userId);
+
    public UserProfile getUserProfile(Authentication authentication);
 
    public UserProfile createUserProfile(Authentication authentication, UserProfileRequest userProfileRequest);
