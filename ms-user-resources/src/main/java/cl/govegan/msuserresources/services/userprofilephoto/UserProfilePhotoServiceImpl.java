@@ -81,9 +81,18 @@ public class UserProfilePhotoServiceImpl implements UserProfilePhotoService {
     private String uploadPhotoToFirebase(String userId, MultipartFile file) {
         try {
             String fileName = "profile-photos/" + userId + "/" + UUID.randomUUID().toString() + "-" + file.getOriginalFilename();
-            return firebaseStorageService.uploadFile(fileName, file.getBytes());
+            System.out.println("Attempting to upload file: " + fileName);
+            String url = firebaseStorageService.uploadFile(fileName, file.getBytes());
+            System.out.println("File uploaded successfully: " + url);
+            return url;
         } catch (IOException e) {
-            throw new RuntimeException("Failed to upload profile photo", e);
+            System.err.println("Failed to process file for upload: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Failed to process file for upload", e);
+        } catch (Exception e) {
+            System.err.println("Failed to upload file to Firebase: " + e.getMessage());
+            e.printStackTrace();
+            throw new RuntimeException("Failed to upload file to Firebase", e);
         }
     }
 }
