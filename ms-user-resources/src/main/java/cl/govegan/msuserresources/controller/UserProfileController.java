@@ -20,13 +20,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.govegan.msuserresources.model.UserProfile;
-import cl.govegan.msuserresources.services.userprofileservice.UserProfileService;
+import cl.govegan.msuserresources.services.userprofile.UserProfileService;
 import cl.govegan.msuserresources.web.request.UserProfileRequest;
 import cl.govegan.msuserresources.web.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("api/v1/user-resources")
+@RequestMapping("api/v1/user-profile")
 @RequiredArgsConstructor
 public class UserProfileController {
 
@@ -498,4 +498,5 @@ public class UserProfileController {
                                 .build());
                 }
         }
+
 }

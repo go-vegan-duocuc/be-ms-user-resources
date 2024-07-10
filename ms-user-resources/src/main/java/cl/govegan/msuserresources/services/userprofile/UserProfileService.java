@@ -1,4 +1,4 @@
-package cl.govegan.msuserresources.services.userprofileservice;
+package cl.govegan.msuserresources.services.userprofile;
 
 import java.util.List;
 

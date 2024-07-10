@@ -1,4 +1,4 @@
-package cl.govegan.msuserresources.services.userprofileservice;
+package cl.govegan.msuserresources.services.userprofile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service;
 import cl.govegan.msuserresources.model.Gender;
 import cl.govegan.msuserresources.model.UserProfile;
 import cl.govegan.msuserresources.repositories.UserProfileRepository;
-import cl.govegan.msuserresources.services.jwtservice.JwtService;
+import cl.govegan.msuserresources.services.firebase.FirebaseStorageService;
+import cl.govegan.msuserresources.services.jwt.JwtService;
 import cl.govegan.msuserresources.web.request.UserProfileRequest;
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +23,7 @@ public class UserProfileServiceImpl implements UserProfileService {
    private final UserProfileRepository userProfileRepository;
    private final JwtService jwtService;
    private static final String USER_ID = "userId";
+   private final FirebaseStorageService firebaseStorageService;
 
    @Override
    public UserProfile getUserProfile(Authentication authentication) {
@@ -33,24 +35,7 @@ public class UserProfileServiceImpl implements UserProfileService {
       if (userProfile.isPresent()) {
          return userProfile.get();
       } else {
-         userProfileRepository.save(UserProfile.builder()
-               .userId(userData.get(USER_ID))
-               .name("")
-               .profilePicture("")
-               .age(0)
-               .gender(Gender.OTRO)
-               .weight(0)
-               .height(0)
-               .city("")
-               .country("")
-               .allergies(new ArrayList<>())
-               .favoriteFoods(new ArrayList<>())
-               .unwantedFoods(new ArrayList<>())
-               .favoriteRecipes(new ArrayList<>())
-               .caloriesPerDay(0)
-               .waterPerDay(0)
-               .title("")
-               .build());
+         userProfileRepository.save(DefaultUserProfile.createDefaultUserProfile(userData.get(USER_ID)));
          Optional<UserProfile> savedProfile = userProfileRepository.findByUserId(userData.get(USER_ID));
          return savedProfile.orElseThrow(() -> new RuntimeException("Profile not found after save"));
 
@@ -67,24 +52,7 @@ public class UserProfileServiceImpl implements UserProfileService {
       if (userProfile.isPresent()) {
          throw new RuntimeException("User profile already exists");
       } else {
-         return userProfileRepository.save(UserProfile.builder()
-               .userId(userData.get(USER_ID))
-               .name("")
-               .profilePicture("")
-               .age(0)
-               .gender(Gender.OTRO)
-               .weight(0)
-               .height(0)
-               .city("")
-               .country("")
-               .allergies(new ArrayList<>())
-               .favoriteFoods(new ArrayList<>())
-               .unwantedFoods(new ArrayList<>())
-               .favoriteRecipes(new ArrayList<>())
-               .caloriesPerDay(0)
-               .waterPerDay(0)
-               .title("")
-               .build());
+         return userProfileRepository.save(DefaultUserProfile.createDefaultUserProfile(userData.get(USER_ID)));
       }
    }
 
@@ -186,13 +154,13 @@ public class UserProfileServiceImpl implements UserProfileService {
       Optional<UserProfile> userProfile = userProfileRepository.findByUserId(userData.get(USER_ID));
 
       if (userProfile.isPresent()) {
-         if(userProfile.get().getFavoriteFoods().contains(foodId)) {
+         if (userProfile.get().getFavoriteFoods().contains(foodId)) {
             throw new RuntimeException("Food already in favorites");
-         }else if(userProfile.get().getUnwantedFoods().contains(foodId)) {
+         } else if (userProfile.get().getUnwantedFoods().contains(foodId)) {
             throw new RuntimeException("Food in unwanted list");
-         }else if(userProfile.get().getAllergies().contains(foodId)) {
+         } else if (userProfile.get().getAllergies().contains(foodId)) {
             throw new RuntimeException("Food in allergies list");
-         }else {
+         } else {
             UserProfile profile = userProfile.get();
             profile.getFavoriteFoods().add(foodId);
             return userProfileRepository.save(profile);
@@ -248,20 +216,20 @@ public class UserProfileServiceImpl implements UserProfileService {
 
    @Override
    public UserProfile addFoodAlergiesById(Authentication authentication, String foodId) {
-      
+
       Map<String, String> userData = jwtService.getClaimsFromAuthentication(authentication);
 
       Optional<UserProfile> userProfile = userProfileRepository.findByUserId(userData.get(USER_ID));
 
       if (userProfile.isPresent()) {
 
-         if(userProfile.get().getFavoriteFoods().contains(foodId)) {
+         if (userProfile.get().getFavoriteFoods().contains(foodId)) {
             throw new RuntimeException("Food in favorites list");
-         }else if(userProfile.get().getUnwantedFoods().contains(foodId)) {
+         } else if (userProfile.get().getUnwantedFoods().contains(foodId)) {
             throw new RuntimeException("Food in unwanted list");
-         }else if(userProfile.get().getAllergies().contains(foodId)) {
+         } else if (userProfile.get().getAllergies().contains(foodId)) {
             throw new RuntimeException("Food already in allergies");
-         }else {
+         } else {
             UserProfile profile = userProfile.get();
             profile.getAllergies().add(foodId);
             return userProfileRepository.save(profile);
@@ -303,16 +271,16 @@ public class UserProfileServiceImpl implements UserProfileService {
 
    @Override
    public Boolean isFoodAlergies(Authentication authentication, String foodId) {
-         
-         Map<String, String> userData = jwtService.getClaimsFromAuthentication(authentication);
-   
-         Optional<UserProfile> userProfile = userProfileRepository.findByUserId(userData.get(USER_ID));
-   
-         if (userProfile.isPresent()) {
-            return userProfile.get().getAllergies().contains(foodId);
-         } else {
-            throw new RuntimeException("User profile not found");
-         }
+
+      Map<String, String> userData = jwtService.getClaimsFromAuthentication(authentication);
+
+      Optional<UserProfile> userProfile = userProfileRepository.findByUserId(userData.get(USER_ID));
+
+      if (userProfile.isPresent()) {
+         return userProfile.get().getAllergies().contains(foodId);
+      } else {
+         throw new RuntimeException("User profile not found");
+      }
    }
 
    @Override
@@ -323,17 +291,17 @@ public class UserProfileServiceImpl implements UserProfileService {
       Optional<UserProfile> userProfile = userProfileRepository.findByUserId(userData.get(USER_ID));
 
       if (userProfile.isPresent()) {
-            if(userProfile.get().getFavoriteFoods().contains(foodId)) {
-               throw new RuntimeException("Food in favorites list");
-            }else if(userProfile.get().getAllergies().contains(foodId)) {
-               throw new RuntimeException("Food in allergies list");
-            }else if(userProfile.get().getUnwantedFoods().contains(foodId)) {
-               throw new RuntimeException("Food already in unwanted");
-            }else {
-               UserProfile profile = userProfile.get();
-               profile.getUnwantedFoods().add(foodId);
-               return userProfileRepository.save(profile);
-            }
+         if (userProfile.get().getFavoriteFoods().contains(foodId)) {
+            throw new RuntimeException("Food in favorites list");
+         } else if (userProfile.get().getAllergies().contains(foodId)) {
+            throw new RuntimeException("Food in allergies list");
+         } else if (userProfile.get().getUnwantedFoods().contains(foodId)) {
+            throw new RuntimeException("Food already in unwanted");
+         } else {
+            UserProfile profile = userProfile.get();
+            profile.getUnwantedFoods().add(foodId);
+            return userProfileRepository.save(profile);
+         }
       } else {
          throw new RuntimeException("User profile not found");
       }
@@ -392,9 +360,33 @@ public class UserProfileServiceImpl implements UserProfileService {
 
       if (userProfile.isPresent()) {
          userProfileRepository.delete(userProfile.get());
+         firebaseStorageService.deleteUserFolder(userData.get(USER_ID));
       } else {
          throw new RuntimeException("User profile not found");
       }
    }
 
+   private static class DefaultUserProfile extends UserProfile {
+
+      public static UserProfile createDefaultUserProfile(String userId) {
+         return UserProfile.builder()
+               .userId(userId)
+               .name("Lettuce B. Vegan")
+               .profilePicture("https://storage.googleapis.com/go-vegan-422700.appspot.com/placeholder%2Fplaceholder.jpg")
+               .age(25)
+               .gender(Gender.OTRO)
+               .weight(60)
+               .height(170)
+               .city("Veganville")
+               .country("Plantopia")
+               .allergies(new ArrayList<>())
+               .favoriteFoods(new ArrayList<>())
+               .unwantedFoods(new ArrayList<>())
+               .favoriteRecipes(new ArrayList<>())
+               .caloriesPerDay(1500)
+               .waterPerDay(3000)
+               .title("Level 5 Vegan: Doesn't eat anything that casts a shadow")
+               .build();
+      }
+   }
 }

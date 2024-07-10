@@ -1,4 +1,4 @@
-package cl.govegan.msuserresources.services.jwtservice;
+package cl.govegan.msuserresources.services.jwt;
 
 import java.util.Date;
 import java.util.Map;
