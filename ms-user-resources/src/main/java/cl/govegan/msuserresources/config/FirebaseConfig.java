@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ResourceLoader;
+import org.springframework.core.io.ClassPathResource;
 
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
@@ -14,22 +14,20 @@ import com.google.firebase.FirebaseOptions;
 public class FirebaseConfig {
 
     @Bean
-    public FirebaseApp firebaseApp(ResourceLoader resourceLoader) throws IOException {
+    public FirebaseApp firebaseApp() throws IOException {
         if (FirebaseApp.getApps().isEmpty()) {
-            // Cargar las credenciales desde el secreto de Google Secret Manager
-            GoogleCredentials credentials = GoogleCredentials.getApplicationDefault();
+            GoogleCredentials credentials = GoogleCredentials.fromStream(
+                    new ClassPathResource("serviceAccountKey.json").getInputStream());
 
-            // Configurar opciones de Firebase
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(credentials)
                     .setStorageBucket("go-vegan-422700.appspot.com")
                     .build();
 
-            // Inicializar FirebaseApp
             return FirebaseApp.initializeApp(options);
         } else {
             return FirebaseApp.getInstance();
         }
-}
+    }
 
 }
