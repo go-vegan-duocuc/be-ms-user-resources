@@ -1,6 +1,5 @@
 package cl.govegan.msuserresources.config;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 
 import org.springframework.context.annotation.Bean;
@@ -12,14 +11,11 @@ import com.google.firebase.FirebaseOptions;
 
 @Configuration
 public class FirebaseConfig {
-
     @Bean
     public FirebaseApp firebaseApp() throws IOException {
         if (FirebaseApp.getApps().isEmpty()) {
-            FileInputStream serviceAccount = new FileInputStream("/app/serviceAccountKey.json");
-
             FirebaseOptions options = FirebaseOptions.builder()
-                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                .setCredentials(GoogleCredentials.getApplicationDefault())
                 .setStorageBucket("go-vegan-422700.appspot.com")
                 .build();
             

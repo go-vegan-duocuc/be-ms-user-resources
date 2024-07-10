@@ -63,17 +63,24 @@ public class FirebaseStorageService {
         try {
             Storage storage = getStorage();
             String bucketName = getBucketName();
-
+    
+            System.out.println("Attempting to upload file: " + fileName);
+            System.out.println("Bucket name: " + bucketName);
+    
             if (bucketName == null || bucketName.isEmpty()) {
                 throw new IllegalStateException("Firebase Storage bucket name is not configured properly.");
             }
-
+    
             BlobId blobId = BlobId.of(bucketName, fileName);
             BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("image/jpeg").build();
             Blob blob = storage.create(blobInfo, fileData);
             makeFilePublic(blob);
-            return constructPublicUrl(bucketName, fileName);
+            String url = constructPublicUrl(bucketName, fileName);
+            System.out.println("File uploaded successfully. URL: " + url);
+            return url;
         } catch (Exception e) {
+            System.err.println("Error uploading file: " + e.getMessage());
+            e.printStackTrace();
             throw new RuntimeException("Failed to upload file: " + e.getMessage(), e);
         }
     }
