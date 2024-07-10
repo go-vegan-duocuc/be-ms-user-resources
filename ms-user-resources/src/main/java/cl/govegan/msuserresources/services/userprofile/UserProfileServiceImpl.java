@@ -55,7 +55,7 @@ public class UserProfileServiceImpl implements UserProfileService {
                     .unwantedFoods(new ArrayList<>())
                     .favoriteRecipes(new ArrayList<>())
                     .caloriesPerDay(1500)
-                    .waterPerDay(3000)
+                    .waterPerDay(2.2)
                     .title("Level 5 Vegan: Doesn't eat anything that casts a shadow")
                     .build();
         }
