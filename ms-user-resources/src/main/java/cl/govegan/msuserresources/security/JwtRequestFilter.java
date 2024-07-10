@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import cl.govegan.msuserresources.exception.TokenValidationException;
-import cl.govegan.msuserresources.services.jwtservice.JwtService;
+import cl.govegan.msuserresources.services.jwt.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
